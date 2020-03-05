@@ -24,7 +24,7 @@ const receiveLogin = user => {
     };
 };
 
-const loginFailure = () => {
+const loginFailure = error => {
     return {
         type: LOGIN_FAILURE,
         error,
@@ -43,7 +43,7 @@ const receiveLogout = () => {
     };
 };
 
-const logoutFailure = () => {
+const logoutFailure = error => {
     return {
         type: LOGOUT_FAILURE,
         error,
@@ -60,4 +60,40 @@ const verifySuccess = () => {
     return {
         type: VERIFY_SUCCESS,
     };
+};
+
+export const loginUser = (email, password) => dispatch => {
+    dispatch(requestLogin());
+    myFirebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(user => {
+            dispatch(receiveLogin(user));
+        })
+        .catch(error => {
+            dispatch(loginFailure(error));
+        });
+};
+
+export const logoutUser = () => dispatch => {
+    dispatch(requestLogout());
+    myFirebase
+        .auth()
+        .signOut()
+        .then(() => {
+            dispatch(receiveLogout());
+        })
+        .catch(error => {
+            dispatch(logoutFailure(error));
+        });
+};
+
+export const verifyAuth = () => dispatch => {
+    dispatch(verifyRequest());
+    myFirebase.auth().onAuthStateChanged(user => {
+        if (user !== null) {
+            dispatch(receiveLogin(user));
+        }
+        dispatch(verifySuccess());
+    });
 };

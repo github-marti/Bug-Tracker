@@ -45,3 +45,15 @@ export interface VerifyRequestAction {
 export interface VerifySuccessAction {
     type: typeof VERIFY_SUCCESS;
 }
+
+export type AuthActionTypes =
+    | RequestLoginAction
+    | ReceiveLoginAction
+    | LoginFailureAction
+    | RequestLogoutAction
+    | ReceiveLogoutAction
+    | LogoutFailureAction
+    | VerifyRequestAction
+    | VerifySuccessAction;
+
+export type AppActions = AuthActionTypes;

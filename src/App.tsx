@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import State from './configureStore';
+import { State } from './reducers/';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './components/Home';

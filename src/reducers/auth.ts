@@ -15,6 +15,16 @@ export interface Action {
     error: Error;
 }
 
+export interface AuthState {
+    isLoggingIn: boolean;
+    isLoggingOut: boolean;
+    isVerifying: boolean;
+    loginError: Error;
+    logoutError: Error;
+    isAuthenticated: boolean;
+    user: object;
+}
+
 export default (
     state = {
         isLoggingIn: false,

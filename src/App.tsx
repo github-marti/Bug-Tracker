@@ -3,11 +3,13 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import State from './configureStore';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './components/Home';
 import Login from './components/Login';
 
-interface Props {
+export interface Props {
     isAuthenticated: boolean;
     isVerifying: boolean;
 }
@@ -21,7 +23,7 @@ function App({ isAuthenticated, isVerifying }: Props) {
     );
 }
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: State) {
     return {
         isAuthenticated: state.auth.isAuthenticated,
         isVerifying: state.auth.isVerifying,

@@ -7,7 +7,13 @@ import {
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
-} from '../actions/';
+} from '../actions';
+
+export interface Action {
+    type: string;
+    user: string;
+    error: Error;
+}
 
 export default (
     state = {
@@ -19,7 +25,7 @@ export default (
         isAuthenticated: false,
         user: {},
     },
-    action,
+    action: Action,
 ) => {
     switch (action.type) {
         case LOGIN_REQUEST:

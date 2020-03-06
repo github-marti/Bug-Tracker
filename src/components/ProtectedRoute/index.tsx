@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { RouteComponentProps } from '@reach/router';
 import { Route, Redirect } from 'react-router-dom';
 
 interface ProtectedRouteProps {
@@ -7,7 +8,7 @@ interface ProtectedRouteProps {
     isVerifying: boolean;
 }
 
-const ProtectedRoute = (props: ProtectedRouteProps) => {
+const ProtectedRoute = (props: ProtectedRouteProps & RouteComponentProps) => {
     const { component, isAuthenticated, isVerifying, ...rest } = props;
 
     return (

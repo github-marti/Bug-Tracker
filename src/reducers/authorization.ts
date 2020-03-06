@@ -7,36 +7,21 @@ import {
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
-} from '../actions';
+    AuthActionTypes,
+} from '../types/actions';
+import { Authorization } from '../types/Authorization';
 
-export interface Action {
-    type: string;
-    user: string;
-    error: Error;
-}
+const authReducerDefaultState: Authorization = {
+    isLoggingIn: false,
+    isLoggingOut: false,
+    isVerifying: false,
+    loginError: undefined,
+    logoutError: undefined,
+    isAuthenticated: false,
+    user: {},
+};
 
-export interface AuthState {
-    isLoggingIn: boolean;
-    isLoggingOut: boolean;
-    isVerifying: boolean;
-    loginError: Error;
-    logoutError: Error;
-    isAuthenticated: boolean;
-    user: object;
-}
-
-export default (
-    state = {
-        isLoggingIn: false,
-        isLoggingOut: false,
-        isVerifying: false,
-        loginError: '',
-        logoutError: '',
-        isAuthenticated: false,
-        user: {},
-    },
-    action: Action,
-) => {
+export default (state = authReducerDefaultState, action: AuthActionTypes) => {
     switch (action.type) {
         case LOGIN_REQUEST:
             return {

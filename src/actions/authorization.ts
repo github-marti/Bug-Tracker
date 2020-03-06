@@ -1,59 +1,67 @@
 import { myFirebase } from '../firebase/firebase';
-import { User } from '../types/User';
-import { AppActions } from '../types/actions';
+import { Dispatch } from 'redux';
+import {
+    AppActions,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILURE,
+    VERIFY_REQUEST,
+    VERIFY_SUCCESS,
+} from '../types/actions';
 
-const requestLogin = () => {
-    return {
-        type: 'LOGIN_REQUEST',
-    };
-};
+const requestLogin = (): AppActions => ({
+    type: LOGIN_REQUEST,
+});
 
-const receiveLogin = (user: User): AppActions => {
+const receiveLogin = (user: object): AppActions => {
     return {
-        type: 'LOGIN_SUCCESS',
+        type: LOGIN_SUCCESS,
         user,
     };
 };
 
 const loginFailure = (error: Error): AppActions => {
     return {
-        type: 'LOGIN_FAILURE',
+        type: LOGIN_FAILURE,
         error,
     };
 };
 
-const requestLogout = () => {
+const requestLogout = (): AppActions => {
     return {
-        type: 'LOGOUT_REQUEST',
+        type: LOGOUT_REQUEST,
     };
 };
 
-const receiveLogout = () => {
+const receiveLogout = (): AppActions => {
     return {
-        type: 'LOGOUT_SUCCESS',
+        type: LOGOUT_SUCCESS,
     };
 };
 
 const logoutFailure = (error: Error): AppActions => {
     return {
-        type: 'LOGOUT_FAILURE',
+        type: LOGOUT_FAILURE,
         error,
     };
 };
 
-const verifyRequest = () => {
+const verifyRequest = (): AppActions => {
     return {
-        type: 'VERIFY_REQUEST',
+        type: VERIFY_REQUEST,
     };
 };
 
-const verifySuccess = () => {
+const verifySuccess = (): AppActions => {
     return {
-        type: 'VERIFY_SUCCESS',
+        type: VERIFY_SUCCESS,
     };
 };
 
-export const loginUser = (email, password) => dispatch => {
+export const loginUser = (email: string, password: string) => (dispatch: Dispatch<AppActions>) => {
     dispatch(requestLogin());
     myFirebase
         .auth()
@@ -66,7 +74,7 @@ export const loginUser = (email, password) => dispatch => {
         });
 };
 
-export const logoutUser = () => dispatch => {
+export const logoutUser = () => (dispatch: Dispatch<AppActions>) => {
     dispatch(requestLogout());
     myFirebase
         .auth()
@@ -79,7 +87,7 @@ export const logoutUser = () => dispatch => {
         });
 };
 
-export const verifyAuth = () => dispatch => {
+export const verifyAuth = () => (dispatch: Dispatch<AppActions>) => {
     dispatch(verifyRequest());
     myFirebase.auth().onAuthStateChanged(user => {
         if (user !== null) {

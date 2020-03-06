@@ -1,5 +1,3 @@
-import { User } from '../types/User';
-
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -17,7 +15,7 @@ export interface RequestLoginAction {
 
 export interface ReceiveLoginAction {
     type: typeof LOGIN_SUCCESS;
-    user: User;
+    user: object;
 }
 
 export interface LoginFailureAction {

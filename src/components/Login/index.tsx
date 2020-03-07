@@ -49,16 +49,76 @@ interface LoginState {
     password: string;
 }
 
-class Login extends Component<{}, LoginState> {
+type Props = LinkStateProps & LinkDispatchProps;
+
+class Login extends Component<Props, LoginState> {
     state = { email: '', password: '' };
 
     handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ email: e.target.value });
+        this.setState({ email: e.target.value, ...this.state });
     };
 
     handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ password: e.target.value });
+        this.setState({ password: e.target.value, ...this.state });
     };
+
+    onSubmit = () => {
+        this.props.loginUser(this.state.email, this.state.password);
+    };
+
+    render() {
+        const { isAuthenticated, loginFailure } = this.props;
+        if (isAuthenticated) {
+            return <Redirect to="/" />;
+        } else {
+            return (
+                <Container component="main" maxWidth="xs">
+                    <Paper className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            onChange={this.handleEmailChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            onChange={this.handlePasswordChange}
+                        />
+                        {loginFailure && (
+                            <Typography component="p" className={classes.errorText}>
+                                Incorrect email or password.
+                            </Typography>
+                        )}
+                        <Button
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={this.onSubmit}
+                        >
+                            Sign In
+                        </Button>
+                    </Paper>
+                </Container>
+            );
+        }
+    }
 }
 
 interface LinkStateProps {
@@ -68,7 +128,7 @@ interface LinkStateProps {
 }
 
 interface LinkDispatchProps {
-    handleSubmit: (email: string, password: string) => void;
+    loginUser: (email: string, password: string) => void;
 }
 
 const mapStateToProps = (state: AppState): LinkStateProps => {
@@ -81,7 +141,7 @@ const mapStateToProps = (state: AppState): LinkStateProps => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
     return {
-        handleSubmit: bindActionCreators(loginUser, dispatch),
+        loginUser: bindActionCreators(loginUser, dispatch),
     };
 };
 

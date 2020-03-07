@@ -11,6 +11,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import { AppState } from '../../store/configureStore';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../../types/actions';
+import { bindActionCreators } from 'redux';
 
 const styles = () => ({
     '@global': {
@@ -55,21 +59,30 @@ class Login extends Component<{}, LoginState> {
     handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({ password: e.target.value });
     };
-
-    handleSubmit = () => {
-        const { dispatch } = this.props;
-        const { email, password } = this.state;
-
-        dispatch(loginUser(email, password));
-    };
 }
 
-function mapStateToProps(state: State) {
+interface LinkStateProps {
+    isLoggingIn: boolean;
+    loginFailure: Error | undefined;
+    isAuthenticated: boolean;
+}
+
+interface LinkDispatchProps {
+    handleSubmit: (email: string, password: string) => void;
+}
+
+const mapStateToProps = (state: AppState): LinkStateProps => {
     return {
-        isLoggingIn: state.auth.isLoggingIn,
-        loginFailure: state.auth.loginError,
-        isAuthenticated: state.auth.isAuthenticated,
+        isLoggingIn: state.authorization.isLoggingIn,
+        loginFailure: state.authorization.loginError,
+        isAuthenticated: state.authorization.isAuthenticated,
     };
-}
+};
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): LinkDispatchProps => {
+    return {
+        handleSubmit: bindActionCreators(loginUser, dispatch),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

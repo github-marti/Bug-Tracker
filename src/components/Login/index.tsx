@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { loginUser } from '../actions';
+import { loginUser } from '../../actions';
 import { withStyles } from '@material-ui/styles';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -40,24 +40,36 @@ const styles = () => ({
     },
 });
 
-interface LoginProps {
-    email: string
-    password: string
+interface LoginState {
+    email: string;
+    password: string;
 }
 
-class Login extends Component<LoginProps, {}> {
-    state = { email: "", password: "" };
+class Login extends Component<{}, LoginState> {
+    state = { email: '', password: '' };
 
-    handleEmailChange = ({ target }) => {
-        this.setState({ email: target.value })
-    }
+    handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ email: e.target.value });
+    };
 
-function mapStateToProps(state: any) {
+    handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ password: e.target.value });
+    };
+
+    handleSubmit = () => {
+        const { dispatch } = this.props;
+        const { email, password } = this.state;
+
+        dispatch(loginUser(email, password));
+    };
+}
+
+function mapStateToProps(state: State) {
     return {
         isLoggingIn: state.auth.isLoggingIn,
-        loginFailure: state.auth.loginFailure,
+        loginFailure: state.auth.loginError,
         isAuthenticated: state.auth.isAuthenticated,
     };
-};
+}
 
 export default connect(mapStateToProps)(Login);

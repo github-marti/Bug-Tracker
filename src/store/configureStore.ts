@@ -6,12 +6,8 @@ import { AppActions } from '../types/actions';
 
 export type AppState = ReturnType<typeof rootReducer>;
 
-export default function configureStore(persistedState: any) {
-    const store = createStore(
-        rootReducer,
-        persistedState,
-        applyMiddleware(thunk as ThunkMiddleware<AppState, AppActions>),
-    );
+export default function configureStore() {
+    const store = createStore(rootReducer, applyMiddleware(thunk as ThunkMiddleware<AppState, AppActions>));
     store.dispatch(verifyAuth());
     return store;
 }

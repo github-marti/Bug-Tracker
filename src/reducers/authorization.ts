@@ -27,7 +27,7 @@ export default (state = authReducerDefaultState, action: AuthActionTypes) => {
             return {
                 ...state,
                 isLoggingIn: true,
-                loginError: '',
+                loginError: undefined,
             };
         case LOGIN_SUCCESS:
             return {
@@ -47,7 +47,7 @@ export default (state = authReducerDefaultState, action: AuthActionTypes) => {
             return {
                 ...state,
                 isLoggingOut: true,
-                logoutError: '',
+                logoutError: undefined,
             };
         case LOGOUT_SUCCESS:
             return {

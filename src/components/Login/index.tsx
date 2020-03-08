@@ -16,40 +16,46 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AppActions } from '../../types/actions';
 import { bindActionCreators } from 'redux';
 
-const styles = () => ({
-    '@global': {
-        body: {
-            backgroundColor: '#fff',
+const styles = {
+    root: {
+        '@global': {
+            body: {
+                backgroundColor: '#fff',
+            },
+        },
+        paper: {
+            marginTop: 100,
+            display: 'flex',
+            padding: 20,
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        avatar: {
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            backgroundColor: '#f50057',
+        },
+        form: {
+            marginTop: 1,
+        },
+        errorText: {
+            color: '#f50057',
+            marginBottom: 5,
+            textAlign: 'center',
         },
     },
-    paper: {
-        marginTop: 100,
-        display: 'flex',
-        padding: 20,
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        backgroundColor: '#f50057',
-    },
-    form: {
-        marginTop: 1,
-    },
-    errorText: {
-        color: '#f50057',
-        marginBottom: 5,
-        textAlign: 'center',
-    },
-});
+};
 
 interface LoginState {
     email: string;
     password: string;
 }
 
-type Props = LinkStateProps & LinkDispatchProps;
+interface LoginProps {
+    classes?: object;
+}
+
+type Props = LoginProps & LinkStateProps & LinkDispatchProps;
 
 class Login extends Component<Props, LoginState> {
     state = { email: '', password: '' };
@@ -67,13 +73,13 @@ class Login extends Component<Props, LoginState> {
     };
 
     render() {
-        const { isAuthenticated, loginFailure } = this.props;
+        const { isAuthenticated, loginFailure, classes } = this.props;
         if (isAuthenticated) {
             return <Redirect to="/" />;
         } else {
             return (
                 <Container component="main" maxWidth="xs">
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.root.paper}>
                         <Avatar className={classes.avatar}>
                             <LockOutlinedIcon />
                         </Avatar>
@@ -145,4 +151,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AppActions>): Link
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login));

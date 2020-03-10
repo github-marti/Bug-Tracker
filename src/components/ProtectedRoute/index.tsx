@@ -4,27 +4,26 @@ import { Route, Redirect } from 'react-router-dom';
 import { AppState } from '../../store/configureStore';
 
 interface ProtectedRouteProps {
-    component: Component;
+    component: React.ComponentClass;
 }
 
 type Props = LinkStateToProps & ProtectedRouteProps;
 
 class ProtectedRoute extends Component<Props, {}> {
     render() {
-        const { isAuthenticated, isVerifying, component, ...rest } = this.props;
+        const { isAuthenticated, isVerifying, component: Component, ...rest } = this.props;
         return (
             <Route
                 {...rest}
-                render={(props: any) =>
+                render={() =>
                     isVerifying ? (
                         <div />
                     ) : isAuthenticated ? (
-                        <Component {...props} />
+                        <Component />
                     ) : (
                         <Redirect
                             to={{
                                 pathname: '/login',
-                                state: { from: props.location },
                             }}
                         />
                     )

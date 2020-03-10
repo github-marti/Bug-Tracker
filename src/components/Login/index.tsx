@@ -70,9 +70,6 @@ export class Login extends Component<Props, LoginState> {
     };
 
     render() {
-        {
-            console.log(this.state);
-        }
         const { isAuthenticated, loginFailure, classes } = this.props;
         if (isAuthenticated) {
             return <Redirect to="/" />;

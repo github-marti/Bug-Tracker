@@ -1,35 +1,46 @@
 import React, { Component } from 'react';
-import { RouteComponentProps } from '@reach/router';
+import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import { AppState } from '../../store/configureStore';
 
 interface ProtectedRouteProps {
     component: Component;
+}
+
+type Props = LinkStateToProps & ProtectedRouteProps;
+
+class ProtectedRoute extends Component<Props, {}> {
+    render() {
+        const { isAuthenticated, isVerifying, ...rest } = this.props;
+        return (
+            <Route
+                {...rest}
+                render={(props: any) =>
+                    isVerifying ? (
+                        <div />
+                    ) : isAuthenticated ? (
+                        <Component {...props} />
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: '/login',
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
+}
+
+interface LinkStateToProps {
     isAuthenticated: boolean;
     isVerifying: boolean;
 }
 
-const ProtectedRoute = (props: ProtectedRouteProps & RouteComponentProps) => {
-    const { component, isAuthenticated, isVerifying, ...rest } = props;
+const mapStateToProps = (state: AppState): LinkStateToProps => ({
+    isAuthenticated: state.authorization.isAuthenticated,
+    isVerifying: state.authorization.isVerifying,
+});
 
-    return (
-        <Route
-            {...rest}
-            render={(props: any) =>
-                isVerifying ? (
-                    <div />
-                ) : isAuthenticated ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: '/login',
-                            state: { from: props.location },
-                        }}
-                    />
-                )
-            }
-        />
-    );
-};
-
-export default ProtectedRoute;
+export default connect(mapStateToProps)(ProtectedRoute);

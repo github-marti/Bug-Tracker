@@ -8,17 +8,18 @@ import { bindActionCreators } from 'redux';
 
 type Props = LinkStateProps & LinkDispatchProps;
 
-class Home extends Component<Props, {}> {
+export class Home extends Component<Props, {}> {
     handleLogout = () => {
         this.props.logoutUser();
     };
 
     render() {
-        const { isLoggingOut, logoutError } = this.props;
+        const { isLoggingOut, logoutError, isAuthenticated } = this.props;
 
         return (
             <div>
                 <h1>This is your app's protected area.</h1>
+                {isAuthenticated ? <p>Yes</p> : <p>No</p>}
                 <p>Any routes here will also be protected.</p>
                 {isLoggingOut && <p>Logging Out.....</p>}
                 {logoutError && <p>{logoutError.toString()}</p>}
@@ -28,6 +29,7 @@ class Home extends Component<Props, {}> {
 }
 
 interface LinkStateProps {
+    isAuthenticated: boolean;
     isLoggingOut: boolean;
     logoutError: Error | undefined;
 }
@@ -37,6 +39,7 @@ interface LinkDispatchProps {
 }
 
 const mapStateToProps = (state: AppState): LinkStateProps => ({
+    isAuthenticated: state.authorization.isAuthenticated,
     isLoggingOut: state.authorization.isLoggingOut,
     logoutError: state.authorization.logoutError,
 });

@@ -19,11 +19,12 @@ class ProtectedRoute extends Component<Props, {}> {
                     isVerifying ? (
                         <div />
                     ) : isAuthenticated ? (
-                        <Component {...props} />
+                        <Component {...this.props} />
                     ) : (
                         <Redirect
                             to={{
                                 pathname: '/login',
+                                state: { from: props.location },
                             }}
                         />
                     )

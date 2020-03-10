@@ -12,9 +12,11 @@ import {
     VERIFY_SUCCESS,
 } from '../types/actions';
 
-const requestLogin = (): AppActions => ({
-    type: LOGIN_REQUEST,
-});
+const requestLogin = (): AppActions => {
+    return {
+        type: LOGIN_REQUEST,
+    };
+};
 
 const receiveLogin = (user: object): AppActions => {
     return {
@@ -80,7 +82,10 @@ export const logoutUser = () => (dispatch: Dispatch<AppActions>) => {
         .auth()
         .signOut()
         .then(() => {
-            dispatch(receiveLogout());
+            function logout() {
+                dispatch(receiveLogout());
+            } // fake async
+            setTimeout(logout, 1000);
         })
         .catch(error => {
             dispatch(logoutFailure(error));

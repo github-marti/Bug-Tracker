@@ -21,6 +21,7 @@ export class Home extends Component<Props, {}> {
                 <h1>This is your app's protected area.</h1>
                 {isAuthenticated ? <p>Yes</p> : <p>No</p>}
                 <p>Any routes here will also be protected.</p>
+                <button onClick={this.handleLogout}>Logout</button>
                 {isLoggingOut && <p>Logging Out.....</p>}
                 {logoutError && <p>{logoutError.toString()}</p>}
             </div>

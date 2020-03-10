@@ -11,7 +11,7 @@ type Props = LinkStateToProps & ProtectedRouteProps;
 
 class ProtectedRoute extends Component<Props, {}> {
     render() {
-        const { isAuthenticated, isVerifying, ...rest } = this.props;
+        const { isAuthenticated, isVerifying, component, ...rest } = this.props;
         return (
             <Route
                 {...rest}
@@ -19,7 +19,7 @@ class ProtectedRoute extends Component<Props, {}> {
                     isVerifying ? (
                         <div />
                     ) : isAuthenticated ? (
-                        <Component {...this.props} />
+                        <Component {...props} />
                     ) : (
                         <Redirect
                             to={{

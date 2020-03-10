@@ -58,11 +58,11 @@ export class Login extends Component<Props, LoginState> {
     state = { email: '', password: '' };
 
     handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ email: e.target.value, ...this.state });
+        this.setState({ email: e.target.value });
     };
 
-    handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ password: e.target.value, ...this.state });
+    handlePasswordChange = ({ target }: React.ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ password: target.value });
     };
 
     onSubmit = () => {
@@ -70,6 +70,9 @@ export class Login extends Component<Props, LoginState> {
     };
 
     render() {
+        {
+            console.log(this.state);
+        }
         const { isAuthenticated, loginFailure, classes } = this.props;
         if (isAuthenticated) {
             return <Redirect to="/" />;
